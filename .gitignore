@@ -22,3 +22,5 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 id3v2-*.tar
 
+# Rustler creates native files inside /priv. We'll ignore that.
+/priv/native/*
