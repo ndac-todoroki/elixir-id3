@@ -17,7 +17,7 @@ mod atoms {
 }
 
 rustler_export_nifs! {
-    "Elixir.ID3V2",
+    "Elixir.ID3V2.Native",
     [("add", 2, add)],
     None
 }
