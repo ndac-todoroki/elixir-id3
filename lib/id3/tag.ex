@@ -1,6 +1,6 @@
-defmodule ID3V2.Tag do
+defmodule ID3.Tag do
   @moduledoc """
-  `ID3V2.Tag` struct represents the set of major frames supported directly by rust-id3. This is always ID3v2.4.
+  `ID3.Tag` struct represents the set of major frames supported directly by rust-id3. This is always ID3v2.4.
 
   This struct must match / be matched by the Rust Nif's struct.
   """

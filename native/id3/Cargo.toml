@@ -1,10 +1,10 @@
 [package]
-name = "id3v2"
+name = "id3"
 version = "0.1.0"
 authors = []
 
 [lib]
-name = "id3v2"
+name = "id3"
 path = "src/lib.rs"
 crate-type = ["dylib"]
 

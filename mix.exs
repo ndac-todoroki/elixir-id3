@@ -1,9 +1,9 @@
-defmodule ID3V2.MixProject do
+defmodule ID3.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :id3v2,
+      app: :id3,
       version: "0.1.0",
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
@@ -12,12 +12,12 @@ defmodule ID3V2.MixProject do
       deps: deps(),
 
       # Docs
-      name: "ID3V2",
-      source_url: "https://github.com/ndac_todoroki/elixir-id3v2",
+      name: "ID3",
+      source_url: "https://github.com/ndac_todoroki/elixir-id3",
       # homepage_url: "http://YOUR_PROJECT_HOMEPAGE",
       docs: [
         # The main page in the docs
-        main: "ID3V2",
+        main: "ID3",
         # logo: "path/to/logo.png",
         extras: ["README.md"]
       ]
@@ -41,8 +41,8 @@ defmodule ID3V2.MixProject do
 
   defp rustler_crates do
     [
-      id3v2: [
-        path: "native/id3v2",
+      id3: [
+        path: "native/id3",
         mode: if(Mix.env() == :prod, do: :release, else: :debug)
       ]
     ]

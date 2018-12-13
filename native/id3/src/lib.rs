@@ -24,7 +24,7 @@ mod atoms {
 }
 
 rustler_export_nifs! {
-    "Elixir.ID3V2.Native",
+    "Elixir.ID3.Native",
     [
         ("get_major_frames", 1, major_frames),
         ("write_major_frames", 2, write_major_frames),
@@ -33,7 +33,7 @@ rustler_export_nifs! {
 }
 
 #[derive(NifStruct)]
-#[module = "ID3V2.Tag"]
+#[module = "ID3.Tag"]
 /// Struct for passing major tag data to/from Elixir.
 struct MajorFrames<'a> {
     // pub comments: Option<String>,
