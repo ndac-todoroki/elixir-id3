@@ -5,7 +5,28 @@ Read/Write mp3 ID3 tags. Using Rust and Rustler as a backbone.
 This module uses [`rust-id3`](https://github.com/jameshurst/rust-id3/) inside, so it follows the restrictions there.
 (Currently ID3v1/v2 reading is supported, and all writing will be done as ID3v2.4)
 
-Read the [Documents](https://hexdocs.pm/id3/doc/ID3.html) to know how to use.
+## Example
+
+```elixir
+iex> {:ok, tag} = ID3.get_tag("audio.mp3")
+iex> tag
+%ID3.Tag{
+  album_artist: "Queen",
+  artist: "Queen",
+  date_recorded: ~N[1977-10-07 00:00:00],
+  date_released: ~N[1981-11-02 00:00:00],
+  disc: 1,
+  duration: nil,
+  genre: "Rock",
+  title: "We Will Rock You",
+  total_discs: 1,
+  total_tracks: 17,
+  track: 16,
+  year: 1981
+}
+```
+
+Read the [Documents](https://hexdocs.pm/id3/ID3.html) to know how to use.
 
 ## Installation
 
