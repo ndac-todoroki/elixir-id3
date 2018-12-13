@@ -9,7 +9,18 @@ defmodule ID3V2.MixProject do
       start_permanent: Mix.env() == :prod,
       rustler_crates: rustler_crates(),
       compilers: [:rustler] ++ Mix.compilers(),
-      deps: deps()
+      deps: deps(),
+
+      # Docs
+      name: "MyApp",
+      source_url: "https://github.com/ndac_todoroki/elixir-id3v2",
+      # homepage_url: "http://YOUR_PROJECT_HOMEPAGE",
+      docs: [
+        # The main page in the docs
+        main: "ID3V2",
+        # logo: "path/to/logo.png",
+        extras: ["README.md"]
+      ]
     ]
   end
 
@@ -23,6 +34,7 @@ defmodule ID3V2.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:ex_doc, "~> 0.19", only: :dev, runtime: false},
       {:rustler, "0.18.0"}
     ]
   end
