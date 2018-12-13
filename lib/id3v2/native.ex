@@ -1,6 +1,8 @@
 defmodule ID3V2.Native do
   @moduledoc """
-  Import position of Rust native code.
+  This module bonds the Rust native code as Erlang NIFs.
+
+  Functions here should not be used directly. Use `ID3V2` module instead.
   """
 
   use Rustler, otp_app: :id3v2, crate: :id3v2

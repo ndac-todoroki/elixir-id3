@@ -12,7 +12,7 @@ defmodule ID3V2.MixProject do
       deps: deps(),
 
       # Docs
-      name: "MyApp",
+      name: "ID3V2",
       source_url: "https://github.com/ndac_todoroki/elixir-id3v2",
       # homepage_url: "http://YOUR_PROJECT_HOMEPAGE",
       docs: [
