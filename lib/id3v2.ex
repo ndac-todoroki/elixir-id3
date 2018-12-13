@@ -3,16 +3,8 @@ defmodule ID3V2 do
   Documentation for ID3V2.
   """
 
-  @doc """
-  Hello world.
+  alias ID3V2.Native
 
-  ## Examples
-
-      iex> ID3V2.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
+  defdelegate get_tag(path), to: Native, as: :get_major_frames
+  defdelegate write_tag(path, tag), to: Native, as: :write_major_frames
 end
