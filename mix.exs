@@ -58,9 +58,8 @@ defmodule ID3.MixProject do
 
   defp package() do
     [
-      # These are the default files included in the package
-      files: ~w(lib priv .formatter.exs mix.exs README* LICENSE*
-                CHANGELOG* src),
+      files: ~w(lib .formatter.exs mix.exs README* LICENSE*
+                CHANGELOG*),
       licenses: ["MIT"],
       links: %{
         "GitHub" => "https://github.com/ndac-todoroki/elixir-id3"
