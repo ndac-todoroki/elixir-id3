@@ -13,14 +13,18 @@ defmodule ID3.MixProject do
 
       # Docs
       name: "ID3",
-      source_url: "https://github.com/ndac_todoroki/elixir-id3",
+      source_url: "https://github.com/ndac-todoroki/elixir-id3",
       # homepage_url: "http://YOUR_PROJECT_HOMEPAGE",
       docs: [
         # The main page in the docs
         main: "ID3",
         # logo: "path/to/logo.png",
         extras: ["README.md"]
-      ]
+      ],
+
+      # Hex.pm
+      description: description(),
+      package: package()
     ]
   end
 
@@ -45,6 +49,22 @@ defmodule ID3.MixProject do
         path: "native/id3",
         mode: if(Mix.env() == :prod, do: :release, else: :debug)
       ]
+    ]
+  end
+
+  defp description() do
+    "Read/Write mp3 ID3 tags. Uses Rust NIF."
+  end
+
+  defp package() do
+    [
+      # These are the default files included in the package
+      files: ~w(lib priv .formatter.exs mix.exs README* LICENSE*
+                CHANGELOG* src),
+      licenses: ["MIT"],
+      links: %{
+        "GitHub" => "https://github.com/ndac-todoroki/elixir-id3"
+      }
     ]
   end
 end
