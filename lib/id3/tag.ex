@@ -8,7 +8,7 @@ defmodule ID3.Tag do
   defstruct [
     # :comments,
     # :lyrics,
-    # :pictures,
+    :pictures,
     :year,
     :date_recorded,
     :date_released,
@@ -26,7 +26,7 @@ defmodule ID3.Tag do
   @type t :: %__MODULE__{
           # comments: String.t() | nil,
           # lyrics: String.t() | nil,
-          # pictures: [Picture.t()],
+          pictures: [Picture.t()],
           year: integer | nil,
           date_recorded: NaiveDateTime.t() | nil,
           date_released: NaiveDateTime.t() | nil,

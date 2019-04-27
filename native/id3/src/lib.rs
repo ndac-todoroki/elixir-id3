@@ -6,10 +6,13 @@ extern crate rustler_codegen;
 extern crate lazy_static;
 extern crate id3;
 
+mod binary;
 mod datetime;
+mod picture;
 
 use datetime::NaiveDateTime;
 use id3::{Tag, Version};
+use picture::ID3Picture;
 use rustler::{Encoder, Env, NifResult, Term};
 
 mod atoms {
@@ -49,6 +52,7 @@ struct MajorFrames<'a> {
     pub total_discs: Option<u32>,
     pub track: Option<u32>,
     pub total_tracks: Option<u32>,
+    pub pictures: Vec<ID3Picture>,
 }
 
 fn major_frames<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
@@ -70,6 +74,7 @@ fn major_frames<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
                 total_discs: tag.total_discs(),
                 track: tag.track(),
                 total_tracks: tag.total_tracks(),
+                pictures: tag.pictures().map(ID3Picture::from).collect::<Vec<_>>(),
             };
             Ok((atoms::ok(), frames).encode(env))
         }
@@ -132,6 +137,7 @@ fn write_major_frames<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>
                 Some(artist) => tag.set_total_tracks(artist),
                 None => tag.remove_total_tracks(),
             };
+            set_pictures(&mut tag, frames.pictures);
 
             match tag.write_to_path(&path, Version::Id3v24) {
                 Ok(_) => Ok(atoms::ok().encode(env)),
@@ -139,5 +145,42 @@ fn write_major_frames<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>
             }
         }
         Err(_e) => Ok((atoms::error(), atoms::file_open_error()).encode(env)),
+    }
+}
+
+/// removes all pictures, then sets all pictures given.
+/// This is a rather heavy function.
+fn set_pictures(tag: &mut id3::Tag, pictures: Vec<picture::ID3Picture>) {
+    use id3::frame::PictureType::*;
+
+    let types = [
+        Other,
+        Icon,
+        OtherIcon,
+        CoverFront,
+        CoverBack,
+        Leaflet,
+        Media,
+        LeadArtist,
+        Artist,
+        Conductor,
+        Band,
+        Composer,
+        Lyricist,
+        RecordingLocation,
+        DuringRecording,
+        DuringPerformance,
+        ScreenCapture,
+        BrightFish,
+        Illustration,
+        BandLogo,
+        PublisherLogo,
+    ];
+    for &t in types.iter() {
+        tag.remove_picture_by_type(t);
+    }
+
+    for pic in pictures {
+        tag.add_picture(pic.into())
     }
 }
