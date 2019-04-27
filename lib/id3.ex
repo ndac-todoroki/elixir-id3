@@ -53,6 +53,8 @@ defmodule ID3 do
   @spec get_tag(Path.t()) :: {:ok, Tag.t()} | {:error, :file_open_error}
   defdelegate get_tag(path), to: Native, as: :get_major_frames
 
+  def get_tag!(path), do: get_tag(path) |> bangify!
+
   @doc """
   Writes a set of major tags to the given mp3 file.
   Setting `nil` for a certain key will remove the previously set value. *It won't bypass it.* Be careful!
@@ -65,4 +67,18 @@ defmodule ID3 do
   """
   @spec write_tag(Path.t(), Tag.t()) :: :ok | {:error, :file_open_error | :tag_write_error}
   defdelegate write_tag(path, tag), to: Native, as: :write_major_frames
+
+  def write_tag!(path, tag), do: write_tag(path, tag) |> bangify!
+
+  defmodule TagIOError do
+    defexception [:message]
+
+    def exception(value) do
+      msg = "Panic reading tags. Rust ID3 error: #{inspect(value)}"
+      %__MODULE__{message: msg}
+    end
+  end
+
+  defp bangify!({:ok, term}), do: term
+  defp bangify!({:error, msg}), do: raise TagIOError, msg
 end
