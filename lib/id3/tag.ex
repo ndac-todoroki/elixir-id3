@@ -40,4 +40,8 @@ defmodule ID3.Tag do
           track: non_neg_integer | nil,
           total_tracks: non_neg_integer | nil
         }
+
+  def new do
+    %{%__MODULE__{} | pictures: []}
+  end
 end
