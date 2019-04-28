@@ -39,6 +39,16 @@ defmodule ID3 do
         disc: 1,
         duration: nil,
         genre: "Rock",
+        pictures: [
+          %ID3.Picture{
+            data: <<255, 216, 255, 224, 0, 16, 74, 70, 73, 70, 0, 1, 1, 0, 0, 72, 0,
+              72, 0, 0, 255, 225, 3, 88, 69, 120, 105, 102, 0, 0, 77, 77, 0, 42, 0, 0,
+              0, 8, 0, 9, ...>>,
+            description: "",
+            mime_type: "image/jpeg",
+            picture_type: :CoverFront
+          }
+        ],
         title: "We Will Rock You",
         total_discs: 1,
         total_tracks: 17,
@@ -61,7 +71,7 @@ defmodule ID3 do
 
   ### Examples
 
-      iex> ID3.write_tag("audio.mp3", %{%ID3.Tag{} | year: 2016})
+      iex> ID3.write_tag("audio.mp3", %{ID3.Tag.new() | year: 2016})  # removes other tags of "audio.mp3" too.
       :ok
 
   """
@@ -80,5 +90,5 @@ defmodule ID3 do
   end
 
   defp bangify!({:ok, term}), do: term
-  defp bangify!({:error, msg}), do: raise TagIOError, msg
+  defp bangify!({:error, msg}), do: raise(TagIOError, msg)
 end
