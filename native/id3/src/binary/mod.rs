@@ -10,7 +10,12 @@ impl Binary {
 impl Encoder for Binary {
     fn encode<'a>(&self, env: Env<'a>) -> Term<'a> {
         let Binary(s) = self;
+
+        // ## About `unsafe`
+        // We won't touch this as a Rust `String` beyond here,
+        // and Elixir will receive this as a `:binary`, so it is safe to do this.
         let string = unsafe { String::from_utf8_unchecked(s.to_owned()) };
+
         string.encode(env)
     }
 }
