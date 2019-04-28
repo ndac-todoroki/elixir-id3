@@ -46,12 +46,16 @@ the package can be installed by adding `id3` to your list of dependencies in `mi
 ```elixir
 def deps do
   [
-    {:id3, "~> 0.1.0"}
+    {:id3, "~> 0.2.0"}
   ]
 end
 ```
 
-Before doing `mix deps.get`, make sure you have the latest Rust (`rustc`) installed on your environment. The stable build should be good enough.
+### Rust is needed!
+
+Before doing `mix deps.get`, make sure you have the latest Rust (`rustc`) installed on your environment.
+Since version `0.2.0`, this project is using Rust 2018 edition, so versions over `1.3.1` are required.
+The stable build should be good enough.
 
 If it's your first time playing with Rust, [install `rustup`](https://www.rust-lang.org/tools/install). Follow the instructions and it will install the latest stable Rust too.
 
