@@ -10,9 +10,9 @@ mod binary;
 mod datetime;
 mod picture;
 
-use datetime::NaiveDateTime;
+use crate::datetime::NaiveDateTime;
 use id3::{Tag, Version};
-use picture::ID3Picture;
+use crate::picture::ID3Picture;
 use rustler::{Encoder, Env, NifResult, Term};
 
 mod atoms {
@@ -56,7 +56,7 @@ struct MajorFrames<'a> {
 }
 
 fn major_frames<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
-    let path: String = try!(args[0].decode());
+    let path: String = (args[0].decode())?;
 
     match Tag::read_from_path(path) {
         Ok(tag) => {
