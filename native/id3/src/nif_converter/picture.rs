@@ -1,4 +1,4 @@
-use crate::binary::Binary;
+use crate::NifBinary;
 use id3::frame::{Picture, PictureType};
 use rustler::types::atom::Atom as NifAtom;
 use rustler_codegen::NifStruct;
@@ -48,7 +48,7 @@ pub struct ID3Picture {
     pub mime_type: String,
     pub picture_type: NifAtom,
     pub description: String,
-    pub data: Binary, // not a valid String, but a elixir binary.
+    pub data: NifBinary, // not a valid String, but a elixir binary.
 }
 
 impl From<&Picture> for ID3Picture {
@@ -57,7 +57,7 @@ impl From<&Picture> for ID3Picture {
             mime_type: pic.mime_type.clone(),
             picture_type: from_picture_type(pic.picture_type),
             description: pic.description.clone(),
-            data: Binary(pic.data.clone()),
+            data: NifBinary(pic.data.clone()),
         }
     }
 }

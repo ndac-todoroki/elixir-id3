@@ -2,12 +2,9 @@ use id3;
 use rustler;
 use rustler_codegen;
 
-mod binary;
-mod datetime;
-mod picture;
+mod nif_converter;
+use crate::nif_converter::{NaiveDateTime, ID3Picture, NifBinary};
 
-use crate::datetime::NaiveDateTime;
-use crate::picture::ID3Picture;
 use id3::{Tag, Version};
 use rustler::{rustler_export_nifs, Encoder, Env, NifResult, Term};
 use rustler_codegen::NifStruct;
@@ -149,7 +146,7 @@ fn write_major_frames<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>
 
 /// removes all pictures, then sets all pictures given.
 /// This is a rather heavy function.
-fn set_pictures(tag: &mut id3::Tag, pictures: Vec<picture::ID3Picture>) {
+fn set_pictures(tag: &mut id3::Tag, pictures: Vec<ID3Picture>) {
     use id3::frame::PictureType::*;
 
     let types = [
