@@ -1,8 +1,11 @@
+use crate::binary::Binary;
 use id3::frame::{Picture, PictureType};
 use rustler::types::atom::Atom as NifAtom;
-use super::binary::Binary;
+use rustler_codegen::NifStruct;
 
 mod atoms {
+    use rustler::rustler_atoms;
+
     rustler_atoms! {
         atom ok;
         atom error;
@@ -11,6 +14,8 @@ mod atoms {
 
 #[allow(non_snake_case)]
 mod pictype_atoms {
+    use rustler::rustler_atoms;
+
     rustler_atoms! {
         atom Other;
         atom Icon;

@@ -1,21 +1,20 @@
-#[macro_use]
-extern crate rustler;
-#[macro_use]
-extern crate rustler_codegen;
-#[macro_use]
-extern crate lazy_static;
-extern crate id3;
+use id3;
+use rustler;
+use rustler_codegen;
 
 mod binary;
 mod datetime;
 mod picture;
 
 use crate::datetime::NaiveDateTime;
-use id3::{Tag, Version};
 use crate::picture::ID3Picture;
-use rustler::{Encoder, Env, NifResult, Term};
+use id3::{Tag, Version};
+use rustler::{rustler_export_nifs, Encoder, Env, NifResult, Term};
+use rustler_codegen::NifStruct;
 
 mod atoms {
+    use rustler::rustler_atoms;
+
     rustler_atoms! {
         atom ok;
         atom error;

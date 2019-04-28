@@ -1,6 +1,7 @@
 use rustler::{Decoder, Encoder, Env, NifResult, Term};
 
 pub struct Binary(pub Vec<u8>);
+
 impl Binary {
     pub fn vec(&self) -> Vec<u8> {
         self.0.to_vec()
