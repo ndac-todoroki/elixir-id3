@@ -79,8 +79,8 @@ fn major_frames<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
 }
 
 fn write_major_frames<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
-    let path: String = args[0].decode()?;
-    let frames: MajorFrames = args[1].decode()?;
+    let frames: MajorFrames = args[0].decode()?;
+    let path: String = args[1].decode()?;
 
     match Tag::read_from_path(&path) {
         Ok(tag) => {

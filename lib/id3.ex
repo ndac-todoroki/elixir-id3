@@ -71,14 +71,14 @@ defmodule ID3 do
 
   ### Examples
 
-      iex> ID3.write_tag("audio.mp3", %{ID3.Tag.new() | year: 2016})  # removes other tags of "audio.mp3" too.
+      iex> ID3.write_tag(%{ID3.Tag.new() | year: 2016}, "audio.mp3")  # removes other tags of "audio.mp3" too.
       :ok
 
   """
-  @spec write_tag(Path.t(), Tag.t()) :: :ok | {:error, :file_open_error | :tag_write_error}
-  defdelegate write_tag(path, tag), to: Native, as: :write_major_frames
+  @spec write_tag(Tag.t(), Path.t()) :: :ok | {:error, :file_open_error | :tag_write_error}
+  defdelegate write_tag(tag, path), to: Native, as: :write_major_frames
 
-  def write_tag!(path, tag), do: write_tag(path, tag) |> bangify!
+  def write_tag!(tag, path), do: write_tag(tag, path) |> bangify!
 
   defmodule TagIOError do
     defexception [:message]
