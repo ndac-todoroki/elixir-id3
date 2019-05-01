@@ -5,6 +5,8 @@ defmodule ID3.Tag do
   This struct must match / be matched by the Rust Nif's struct.
   """
 
+  alias ID3.Picture
+
   defstruct [
     # :comments,
     # :lyrics,
@@ -43,5 +45,14 @@ defmodule ID3.Tag do
 
   def new do
     %{%__MODULE__{} | pictures: []}
+  end
+
+  def put_picture(%__MODULE__{} = tag, %Picture{picture_type: type} = picture) do
+    pictures =
+      tag.pictures
+      |> Enum.reject(fn %Picture{picture_type: pt} -> pt == type end)
+      |> List.insert_at(0, picture)
+
+    %{tag | pictures: pictures}
   end
 end
