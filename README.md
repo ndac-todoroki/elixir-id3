@@ -46,7 +46,7 @@ the package can be installed by adding `id3` to your list of dependencies in `mi
 ```elixir
 def deps do
   [
-    {:id3, "~> 0.2.0"}
+    {:id3, "~> 1.0.0"}
   ]
 end
 ```
