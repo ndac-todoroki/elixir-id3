@@ -59,12 +59,46 @@ defmodule ID3.Picture do
           | :BandLogo
           | :PublisherLogo
 
-  def new(data) when data |> is_binary do
-    %__MODULE__{
-      picture_type: :Other,
-      mime_type: "",
-      description: "",
-      data: data
-    }
+  @doc """
+  Creates a new Picture.
+
+  Needs the data binary and the MIME type of the data.
+
+  ## Options
+  - `picture_type`: ID3 tags can have a picture for each type. One of `t:Picture.picture_type/0`.
+  - `description`: Text description about the picture.
+
+  ## Examples
+      iex> data = File.read!("full/path/to/foo.jpg")
+      iex> ID3.Picture.new(data, "image/jpeg", picture_type: :CoverFront)
+      {:ok,
+        %ID3.Picture{
+          data: <<255, 167, ...>>,
+          description: "",
+          mime_type: "image/jpeg",
+          picture_type: :CoverFront
+        }
+      }
+  """
+  @spec new(binary, String.t(), options :: [option]) :: {:ok, Picture.t()} | :error
+        when option: {:picture_type, picture_type()} | {:description, String.t()}
+  def new(data, mime_type, options \\ [])
+      when data |> is_binary and mime_type |> is_binary and options |> is_list do
+    picture_type = options |> Keyword.get(:picture_type, :Other)
+    description = options |> Keyword.get(:description, "")
+
+    with true <- @picture_types |> Enum.member?(picture_type),
+         true <- description |> String.valid?() do
+      picture = %__MODULE__{
+        picture_type: picture_type,
+        mime_type: mime_type,
+        description: "",
+        data: data
+      }
+
+      {:ok, picture}
+    else
+      _ -> :error
+    end
   end
 end
