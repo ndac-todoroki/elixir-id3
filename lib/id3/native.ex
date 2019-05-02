@@ -15,7 +15,7 @@ defmodule ID3.Native do
   @spec get_major_frames(Path.t()) :: {:ok, ID3.Tag.t()} | {:error, :file_open_error}
   def get_major_frames(_path), do: :erlang.nif_error(:nif_not_loaded)
 
-  @spec write_major_frames(Path.t(), Tag.t()) ::
+  @spec write_major_frames(Tag.t(), Path.t()) ::
           :ok | {:error, :file_open_error | :tag_write_error}
-  def write_major_frames(_path, %Tag{} = _frames), do: :erlang.nif_error(:nif_not_loaded)
+  def write_major_frames(%Tag{} = _frames, _path), do: :erlang.nif_error(:nif_not_loaded)
 end
