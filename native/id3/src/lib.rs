@@ -39,6 +39,7 @@ struct MajorFrames<'a> {
     pub date_released: Option<NaiveDateTime>,
     pub artist: Option<&'a str>,
     pub album_artist: Option<&'a str>,
+    pub album: Option<&'a str>,
     pub title: Option<&'a str>,
     pub duration: Option<u32>,
     pub genre: Option<&'a str>,
@@ -60,6 +61,7 @@ fn major_frames<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
                 date_recorded: tag.date_recorded().map(NaiveDateTime::from),
                 date_released: tag.date_released().map(NaiveDateTime::from),
                 artist: tag.artist(),
+                album: tag.album(),
                 album_artist: tag.album_artist(),
                 title: tag.title(),
                 duration: tag.duration(),
@@ -98,6 +100,10 @@ fn write_major_frames<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>
             match frames.artist {
                 Some(artist) => tag.set_artist(artist),
                 None => tag.remove_artist(),
+            };
+            match frames.album {
+                Some(album) => tag.set_album(album),
+                None => tag.remove_album(),
             };
             match frames.album_artist {
                 Some(artist) => tag.set_album_artist(artist),
