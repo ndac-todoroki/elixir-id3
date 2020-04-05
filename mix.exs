@@ -4,7 +4,7 @@ defmodule ID3.MixProject do
   def project do
     [
       app: :id3,
-      version: "1.0.0",
+      version: "1.0.1",
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
       rustler_crates: rustler_crates(),
@@ -58,8 +58,9 @@ defmodule ID3.MixProject do
 
   defp package() do
     [
-      files: ~w(lib .formatter.exs mix.exs README* LICENSE*
+      files: ~w(lib native .formatter.exs mix.exs README* LICENSE*
                 CHANGELOG*),
+      exclude_patterns: ~w(native/id3/target),
       licenses: ["MIT"],
       links: %{
         "GitHub" => "https://github.com/ndac-todoroki/elixir-id3"
