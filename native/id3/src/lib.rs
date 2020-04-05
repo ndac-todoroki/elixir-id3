@@ -2,10 +2,10 @@ use id3;
 use rustler;
 
 mod nif_converter;
-use crate::nif_converter::{NaiveDateTime, ID3Picture, NifBinary};
+use crate::nif_converter::{ID3Picture, NaiveDateTime, NifBinary};
 
 use id3::{Tag, Version};
-use rustler::{rustler_export_nifs, Encoder, Env, NifResult, Term, NifStruct};
+use rustler::{rustler_export_nifs, Encoder, Env, NifResult, NifStruct, Term};
 
 mod atoms {
     use rustler::rustler_atoms;
