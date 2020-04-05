@@ -4,7 +4,7 @@ defmodule ID3.MixProject do
   def project do
     [
       app: :id3,
-      version: "1.0.1",
+      version: "1.0.0",
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
       rustler_crates: rustler_crates(),
@@ -39,7 +39,7 @@ defmodule ID3.MixProject do
   defp deps do
     [
       {:ex_doc, "~> 0.19", only: :dev, runtime: false},
-      {:rustler, "~> 0.20.0"}
+      {:rustler, "~> 0.21.0"}
     ]
   end
 

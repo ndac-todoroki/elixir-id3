@@ -1,7 +1,7 @@
 use crate::NifBinary;
 use id3::frame::{Picture, PictureType};
 use rustler::types::atom::Atom as NifAtom;
-use rustler_codegen::NifStruct;
+use rustler::NifStruct;
 
 mod atoms {
     use rustler::rustler_atoms;

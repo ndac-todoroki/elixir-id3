@@ -1,6 +1,6 @@
 use id3::Timestamp;
 use rustler::types::atom::Atom as NifAtom;
-use rustler_codegen::NifStruct;
+use rustler::NifStruct;
 
 mod atoms {
     use rustler::rustler_atoms;
