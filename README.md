@@ -13,6 +13,7 @@ iex> tag
 %ID3.Tag{
   album_artist: "Queen",
   artist: "Queen",
+  album: "News of the World"
   date_recorded: ~N[1977-10-07 00:00:00],
   date_released: ~N[1981-11-02 00:00:00],
   disc: 1,
