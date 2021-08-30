@@ -39,7 +39,7 @@ defmodule ID3.MixProject do
   defp deps do
     [
       {:ex_doc, "~> 0.19", only: :dev, runtime: false},
-      {:rustler, "~> 0.21.0"}
+      {:rustler, "~> 0.21"}
     ]
   end
 
