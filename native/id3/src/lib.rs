@@ -5,29 +5,20 @@ mod nif_converter;
 use crate::nif_converter::{ID3Picture, NaiveDateTime, NifBinary};
 
 use id3::{Tag, Version};
-use rustler::{rustler_export_nifs, Encoder, Env, NifResult, NifStruct, Term};
+use rustler::{init, Env, Encoder, NifResult, NifStruct, Term};
 
 mod atoms {
-    use rustler::rustler_atoms;
+    use rustler::atoms;
 
-    rustler_atoms! {
-        atom ok;
-        atom error;
-        //atom __true__ = "true";
-        //atom __false__ = "false";
-        atom file_open_error;
-        atom tag_write_error;
+    atoms! {
+        ok,
+        error,
+        file_open_error,
+        tag_write_error,
     }
 }
 
-rustler_export_nifs! {
-    "Elixir.ID3.Native",
-    [
-        ("get_major_frames", 1, major_frames),
-        ("write_major_frames", 2, write_major_frames),
-    ],
-    None
-}
+init!("Elixir.ID3.Native", [major_frames, write_major_frames]);
 
 #[derive(NifStruct)]
 #[module = "ID3.Tag"]
@@ -50,9 +41,51 @@ struct MajorFrames<'a> {
     pub pictures: Vec<ID3Picture>,
 }
 
-fn major_frames<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
-    let path: String = (args[0].decode())?;
+enum ReadResult<'a> {
+    Ok(MajorFrames<'a>),
+    Error()
+}
 
+impl ReadResult<'_> {
+    fn ok<'a>(frames: MajorFrames<'a>) -> ReadResult<'a> {
+        ReadResult::Ok(frames)
+    }
+
+    fn error<'a>() -> ReadResult<'a> {
+        ReadResult::Error()
+    }
+}
+
+impl<'a> Encoder for ReadResult<'a> {
+    fn encode<'a>(&'a self, env: Env<'a>) -> Term<'a> {
+        match self {
+            ReadResult::Ok(frames) => (
+                atoms::ok(),
+                MajorFrames {
+                    // comments:
+                    year: frames.year,
+                    date_recorded: frames.date_recorded,
+                    date_released: frames.date_released,
+                    artist: frames.artist,
+                    album: frames.album,
+                    album_artist: frames.album_artist,
+                    title: frames.title,
+                    duration: frames.duration,
+                    genre: frames.genre,
+                    disc: frames.disc,
+                    total_discs: frames.total_discs,
+                    track: frames.track,
+                    total_tracks: frames.total_tracks,
+                    pictures: frames.pictures,
+                }
+            ).encode(env),
+            ReadResult::Error() => (atoms::error(), atoms::file_open_error()).encode(env)
+        }
+    }
+}
+
+#[rustler::nif(name = "get_major_frames")]
+fn major_frames<'a>(path: String) -> ReadResult<'a> {
     match Tag::read_from_path(path) {
         Ok(tag) => {
             let frames = MajorFrames {
@@ -72,12 +105,13 @@ fn major_frames<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
                 total_tracks: tag.total_tracks(),
                 pictures: tag.pictures().map(ID3Picture::from).collect::<Vec<_>>(),
             };
-            Ok((atoms::ok(), frames).encode(env))
+            ReadResult::ok(frames)
         }
-        Err(_e) => Ok((atoms::error(), atoms::file_open_error()).encode(env)),
+        Err(_e) => ReadResult::error(),
     }
 }
 
+#[rustler::nif]
 fn write_major_frames<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
     let frames: MajorFrames = args[0].decode()?;
     let path: String = args[1].decode()?;

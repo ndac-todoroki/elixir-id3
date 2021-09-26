@@ -4,40 +4,40 @@ use rustler::types::atom::Atom as NifAtom;
 use rustler::NifStruct;
 
 mod atoms {
-    use rustler::rustler_atoms;
+    use rustler::atoms;
 
-    rustler_atoms! {
-        atom ok;
-        atom error;
+    atoms! {
+        ok,
+        error,
     }
 }
 
 #[allow(non_snake_case)]
 mod pictype_atoms {
-    use rustler::rustler_atoms;
+    use rustler::atoms;
 
-    rustler_atoms! {
-        atom Other;
-        atom Icon;
-        atom OtherIcon;
-        atom CoverFront;
-        atom CoverBack;
-        atom Leaflet;
-        atom Media;
-        atom LeadArtist;
-        atom Artist;
-        atom Conductor;
-        atom Band;
-        atom Composer;
-        atom Lyricist;
-        atom RecordingLocation;
-        atom DuringRecording;
-        atom DuringPerformance;
-        atom ScreenCapture;
-        atom BrightFish;
-        atom Illustration;
-        atom BandLogo;
-        atom PublisherLogo;
+    atoms! {
+        Other,
+        Icon,
+        OtherIcon,
+        CoverFront,
+        CoverBack,
+        Leaflet,
+        Media,
+        LeadArtist,
+        Artist,
+        Conductor,
+        Band,
+        Composer,
+        Lyricist,
+        RecordingLocation,
+        DuringRecording,
+        DuringPerformance,
+        ScreenCapture,
+        BrightFish,
+        Illustration,
+        BandLogo,
+        PublisherLogo,
     }
 }
 
