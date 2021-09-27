@@ -5,7 +5,7 @@ mod nif_converter;
 use crate::nif_converter::{ID3Picture, NaiveDateTime, NifBinary};
 
 use id3::{Tag, Version};
-use rustler::{init, Env, Encoder, NifResult, NifStruct, Term};
+use rustler::{init, Encoder, Env, NifResult, NifStruct, Term};
 
 mod atoms {
     use rustler::atoms;
@@ -43,7 +43,7 @@ struct MajorFrames {
 
 enum ReadResult {
     Ok(MajorFrames),
-    Error()
+    Error(),
 }
 
 impl ReadResult {
@@ -61,6 +61,30 @@ impl Encoder for ReadResult {
         match self {
             ReadResult::Ok(frames) => (atoms::ok(), frames).encode(env),
             ReadResult::Error() => (atoms::error(), atoms::file_open_error()).encode(env),
+        }
+    }
+}
+
+enum WriteResult {
+    Ok(),
+    Error(rustler::Atom),
+}
+
+impl WriteResult {
+    fn ok() -> WriteResult {
+        WriteResult::Ok()
+    }
+
+    fn error(reason: rustler::Atom) -> WriteResult {
+        WriteResult::Error(reason)
+    }
+}
+
+impl Encoder for WriteResult {
+    fn encode<'a>(&self, env: Env<'a>) -> Term<'a> {
+        match self {
+            WriteResult::Ok() => atoms::ok().encode(env),
+            WriteResult::Error(reason) => (atoms::error(), reason).encode(env),
         }
     }
 }
@@ -93,10 +117,7 @@ fn major_frames(path: String) -> ReadResult {
 }
 
 #[rustler::nif]
-fn write_major_frames<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
-    let frames: MajorFrames = args[0].decode()?;
-    let path: String = args[1].decode()?;
-
+fn write_major_frames<'a>(frames: MajorFrames, path: String) -> WriteResult {
     match Tag::read_from_path(&path) {
         Ok(tag) => {
             let mut tag = tag;
@@ -155,11 +176,11 @@ fn write_major_frames<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>
             set_pictures(&mut tag, frames.pictures);
 
             match tag.write_to_path(&path, Version::Id3v24) {
-                Ok(_) => Ok(atoms::ok().encode(env)),
-                Err(_) => Ok((atoms::error(), atoms::tag_write_error()).encode(env)),
+                Ok(_) => WriteResult::ok(),
+                Err(_) => WriteResult::error(atoms::tag_write_error()),
             }
         }
-        Err(_e) => Ok((atoms::error(), atoms::file_open_error()).encode(env)),
+        Err(_e) => WriteResult::error(atoms::file_open_error()),
     }
 }
 
