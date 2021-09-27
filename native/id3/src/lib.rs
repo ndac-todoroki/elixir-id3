@@ -59,27 +59,8 @@ impl ReadResult {
 impl Encoder for ReadResult {
     fn encode<'a>(&self, env: Env<'a>) -> Term<'a> {
         match self {
-            ReadResult::Ok(frames) => (
-                atoms::ok(),
-                MajorFrames {
-                    // comments:
-                    year: frames.year,
-                    date_recorded: frames.date_recorded,
-                    date_released: frames.date_released,
-                    artist: frames.artist,
-                    album: frames.album,
-                    album_artist: frames.album_artist,
-                    title: frames.title,
-                    duration: frames.duration,
-                    genre: frames.genre,
-                    disc: frames.disc,
-                    total_discs: frames.total_discs,
-                    track: frames.track,
-                    total_tracks: frames.total_tracks,
-                    pictures: frames.pictures,
-                }
-            ).encode(env),
-            ReadResult::Error() => (atoms::error(), atoms::file_open_error()).encode(env)
+            ReadResult::Ok(frames) => (atoms::ok(), frames).encode(env),
+            ReadResult::Error() => (atoms::error(), atoms::file_open_error()).encode(env),
         }
     }
 }
