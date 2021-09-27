@@ -5,7 +5,7 @@ mod nif_converter;
 use crate::nif_converter::{ID3Picture, NaiveDateTime, NifBinary};
 
 use id3::{Tag, Version};
-use rustler::{init, Encoder, Env, NifResult, NifStruct, Term};
+use rustler::{init, Encoder, Env, NifStruct, Term};
 
 mod atoms {
     use rustler::atoms;
