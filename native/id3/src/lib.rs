@@ -23,17 +23,17 @@ init!("Elixir.ID3.Native", [major_frames, write_major_frames]);
 #[derive(NifStruct)]
 #[module = "ID3.Tag"]
 /// Struct for passing major tag data to/from Elixir.
-struct MajorFrames<'a> {
+struct MajorFrames {
     // pub comments: Option<String>,
     pub year: Option<i32>,
     pub date_recorded: Option<NaiveDateTime>,
     pub date_released: Option<NaiveDateTime>,
-    pub artist: Option<&'a str>,
-    pub album_artist: Option<&'a str>,
-    pub album: Option<&'a str>,
-    pub title: Option<&'a str>,
+    pub artist: Option<String>,
+    pub album_artist: Option<String>,
+    pub album: Option<String>,
+    pub title: Option<String>,
     pub duration: Option<u32>,
-    pub genre: Option<&'a str>,
+    pub genre: Option<String>,
     pub disc: Option<u32>,
     pub total_discs: Option<u32>,
     pub track: Option<u32>,
@@ -41,23 +41,23 @@ struct MajorFrames<'a> {
     pub pictures: Vec<ID3Picture>,
 }
 
-enum ReadResult<'a> {
-    Ok(MajorFrames<'a>),
+enum ReadResult {
+    Ok(MajorFrames),
     Error()
 }
 
-impl ReadResult<'_> {
-    fn ok<'a>(frames: MajorFrames<'a>) -> ReadResult<'a> {
+impl ReadResult {
+    fn ok(frames: MajorFrames) -> ReadResult {
         ReadResult::Ok(frames)
     }
 
-    fn error<'a>() -> ReadResult<'a> {
+    fn error() -> ReadResult {
         ReadResult::Error()
     }
 }
 
-impl<'a> Encoder for ReadResult<'a> {
-    fn encode<'a>(&'a self, env: Env<'a>) -> Term<'a> {
+impl Encoder for ReadResult {
+    fn encode<'a>(&self, env: Env<'a>) -> Term<'a> {
         match self {
             ReadResult::Ok(frames) => (
                 atoms::ok(),
@@ -85,7 +85,7 @@ impl<'a> Encoder for ReadResult<'a> {
 }
 
 #[rustler::nif(name = "get_major_frames")]
-fn major_frames<'a>(path: String) -> ReadResult<'a> {
+fn major_frames(path: String) -> ReadResult {
     match Tag::read_from_path(path) {
         Ok(tag) => {
             let frames = MajorFrames {
@@ -93,12 +93,12 @@ fn major_frames<'a>(path: String) -> ReadResult<'a> {
                 year: tag.year(),
                 date_recorded: tag.date_recorded().map(NaiveDateTime::from),
                 date_released: tag.date_released().map(NaiveDateTime::from),
-                artist: tag.artist(),
-                album: tag.album(),
-                album_artist: tag.album_artist(),
-                title: tag.title(),
+                artist: tag.artist().map(|s| s.to_string()),
+                album: tag.album().map(|s| s.to_string()),
+                album_artist: tag.album_artist().map(|s| s.to_string()),
+                title: tag.title().map(|s| s.to_string()),
                 duration: tag.duration(),
-                genre: tag.genre(),
+                genre: tag.genre().map(|s| s.to_string()),
                 disc: tag.disc(),
                 total_discs: tag.total_discs(),
                 track: tag.track(),
