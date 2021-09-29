@@ -26,3 +26,6 @@ id3-*.tar
 /priv/native/*
 
 native/id3/.cargo/config
+
+.DS_Store
+priv/.DS_Store
