@@ -4,11 +4,10 @@ defmodule ID3.MixProject do
   def project do
     [
       app: :id3,
-      version: "1.0.1",
+      version: "1.0.2",
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
-      rustler_crates: rustler_crates(),
-      compilers: [:rustler] ++ Mix.compilers(),
+      compilers: Mix.compilers(),
       deps: deps(),
 
       # Docs
@@ -39,16 +38,7 @@ defmodule ID3.MixProject do
   defp deps do
     [
       {:ex_doc, "~> 0.19", only: :dev, runtime: false},
-      {:rustler, "~> 0.21.0"}
-    ]
-  end
-
-  defp rustler_crates do
-    [
-      id3: [
-        path: "native/id3",
-        mode: if(Mix.env() == :prod, do: :release, else: :debug)
-      ]
+      {:rustler, "~> 0.22.0"}
     ]
   end
 

@@ -3,12 +3,12 @@ use rustler::types::atom::Atom as NifAtom;
 use rustler::NifStruct;
 
 mod atoms {
-    use rustler::rustler_atoms;
+    use rustler::atoms;
 
-    rustler_atoms! {
-        atom ok;
-        atom error;
-        atom calendar_iso = "Elixir.Calendar.ISO";
+    atoms! {
+        ok,
+        error,
+        calendar_iso = "Elixir.Calendar.ISO",
     }
 }
 
