@@ -24,3 +24,8 @@ id3-*.tar
 
 # Rustler creates native files inside /priv. We'll ignore that.
 /priv/native/*
+
+native/id3/.cargo/config
+
+.DS_Store
+priv/.DS_Store
